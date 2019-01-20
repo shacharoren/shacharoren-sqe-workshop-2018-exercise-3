@@ -66,9 +66,9 @@ function getFlow(cfg, vars){
     if (cfg==undefined ){
         return;
     }
-    // if (cfg==null){
-    //     return;
-    // }
+    if (cfg==null){
+        return;
+    }
     if ('flowstate' in cfg){
         //containe
 

@@ -11,8 +11,8 @@ function resolveElements(input) {
 }
 function resolveElements2(input) {
     switch (input.type) {
-    case 'BlockStatement':return '';
-    //case 'ExpressionStatement':return getLabel(input.expression);
+    case 'BlockStatement':return rowBlockStatement(input);
+    case 'ExpressionStatement':return getLabel(input.expression);
     case 'VariableDeclaration':return getLabel(input.declarations[0].id) + ' = ' + getLabel(input.declarations[0].init);
     case 'BinaryExpression':return getLabel(input.left) + ' ' + input.operator + ' ' + getLabel(input.right);
     default :return resolveElements3(input);
@@ -22,8 +22,8 @@ function resolveElements3(input) {
     switch (input.type) {
     case 'ReturnStatement':return 'return ' + getLabel(input.argument);
     case 'AssignmentExpression':return getLabel(input.left) + ' ' + input.operator + ' ' + getLabel(input.right);
-    //case 'WhileStatement':return 'while (' + getLabel(input.test) + ') {\n' + getLabel(input.body) + '\n}';
-    //case 'IfStatement':return rowIfStatement(input);
+    case 'WhileStatement':return 'while (' + getLabel(input.test) + ') {\n' + getLabel(input.body) + '\n}';
+    case 'IfStatement':return rowIfStatement(input);
     default :return resolveElements4(input);
     }
 }
@@ -34,17 +34,15 @@ function resolveElements4(input) {
     }
 }
 
-//
-// function rowBlockStatement(input){
-//     let res = '';
-//     let index=0;
-//     while(input<input.length){
-//         res += getLabel(input.body[index])+'\n';
-//         index++;
-//     }
-//     return res;
-//
-// }
+
+function rowBlockStatement(code){
+    let res = '';
+    for(let i=0;i<code.body.length;i++){
+        res += getLabel(code.body[i])+'\n';
+    }
+    return res;
+
+}
 
 function rowArrayExpression(input){
     let index=0;
@@ -71,7 +69,6 @@ function rowUpdateExpression(input){
 
 
 
-/*
 function rowIfStatement(input){
     let temp = getLabel(input.alternate);
     if(temp != ''){
@@ -80,7 +77,6 @@ function rowIfStatement(input){
     }
     return 'if (' + getLabel(input.test) + ') {\n' + getLabel(input.consequent) + '\n} ' + temp;
 }
-*/
 
 
 
